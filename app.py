@@ -1,11 +1,13 @@
 import streamlit as st
 from langchain_community.document_loaders import PyPDFLoader, Docx2txtLoader, TextLoader
 from langchain.text_splitter import CharacterTextSplitter
-from langchain.vectorstores import FAISS
+from langchain.vectorstores import Chroma
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.chains import RetrievalQA
 from langchain.chat_models import ChatOpenAI
 import tempfile
+import os
+import shutil
 
 st.set_page_config(page_title="Chat with Documents", layout="wide")
 st.title("📄 Chat with Your Documents (RAG App)")
@@ -39,8 +41,12 @@ if st.button("📚 Process Documents") and uploaded_files and openai_api_key:
     text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
     docs = text_splitter.split_documents(all_texts)
 
+    persist_dir = "chroma_db"
+    if os.path.exists(persist_dir):
+        shutil.rmtree(persist_dir)
+
     embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
-    vectorstore = FAISS.from_documents(docs, embeddings)
+    vectorstore = Chroma.from_documents(documents=docs, embedding=embeddings, persist_directory=persist_dir)
     retriever = vectorstore.as_retriever()
 
     qa_chain = RetrievalQA.from_chain_type(
