@@ -1,29 +1,23 @@
 import streamlit as st
-from langchain.document_loaders import PyPDFLoader, Docx2txtLoader, TextLoader
-from langchain.embeddings import OpenAIEmbeddings
-from langchain.vectorstores import FAISS
+from langchain_community.document_loaders import PyPDFLoader, Docx2txtLoader, TextLoader
 from langchain.text_splitter import CharacterTextSplitter
+from langchain.vectorstores import FAISS
+from langchain.embeddings import OpenAIEmbeddings
 from langchain.chains import RetrievalQA
 from langchain.chat_models import ChatOpenAI
 import tempfile
 
-# Page settings
-st.set_page_config(page_title="Chat with Your Documents", layout="wide")
+st.set_page_config(page_title="Chat with Documents", layout="wide")
 st.title("📄 Chat with Your Documents (RAG App)")
 
-# File uploader
 uploaded_files = st.file_uploader("Upload PDF, DOCX, or TXT files", type=["pdf", "docx", "txt"], accept_multiple_files=True)
-
-# OpenAI API key input
 openai_api_key = st.text_input("🔑 Enter your OpenAI API Key", type="password")
 
-# Start processing
 if st.button("📚 Process Documents") and uploaded_files and openai_api_key:
     all_texts = []
 
     for uploaded_file in uploaded_files:
         suffix = uploaded_file.name.split(".")[-1].lower()
-
         with tempfile.NamedTemporaryFile(delete=False, suffix="." + suffix) as tmp_file:
             tmp_file.write(uploaded_file.read())
             tmp_path = tmp_file.name
