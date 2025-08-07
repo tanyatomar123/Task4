@@ -1,5 +1,5 @@
 streamlit
-langchain
+langchain==0.1.17
 sentence-transformers
 chromadb
 PyMuPDF
