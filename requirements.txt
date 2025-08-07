@@ -1,8 +1,8 @@
+
 streamlit
-langchain==0.0.340
-chromadb
-sentence-transformers
-huggingface-hub
-PyMuPDF
-docx2txt
-transformers
+openai
+faiss-cpu
+langchain
+PyPDF2
+python-docx
+tiktoken
