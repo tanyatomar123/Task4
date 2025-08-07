@@ -1,8 +1,8 @@
 streamlit
-langchain
-sentence-transformers
+langchain==0.0.340
 chromadb
+sentence-transformers
+huggingface-hub
 PyMuPDF
 docx2txt
 transformers
-huggingface-hub
