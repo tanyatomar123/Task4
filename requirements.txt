@@ -1,3 +1,4 @@
+unstructured[pdf]
 streamlit
 langchain
 langchain-community
